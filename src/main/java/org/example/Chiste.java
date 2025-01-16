@@ -1,5 +1,9 @@
 package org.example;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -11,15 +15,19 @@ import java.util.Objects;
  * Atributos: id de tipo int, categoria de tipo Categoria, idiomade tipo Lenguaje, tipo de TipoChiste,
  *  List<Flag> banderas, String chiste, String respuesta.
  */
+@Entity
 public class Chiste {
+    @Id
     private int id;
-    private Categoria categoria;
-    private TipoChiste tipo;
-    private final List<Flag> banderas;
+    transient private Categoria categoria;
+    transient private TipoChiste tipo;
+    transient private final List<Flag> banderas;
+    @Column(name = "chiste")
     private String chiste;
+    @Column(name = "respuesta")
     private String respuesta;
 
-    private Lenguaje lenguaje;
+    transient private Lenguaje lenguaje;
 
     /**
      * Constructor de la clase Chiste.
