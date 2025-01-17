@@ -18,16 +18,17 @@ import java.util.Objects;
 @Entity
 public class Chiste {
     @Id
+    @Column(name = "idChiste")
     private int id;
-    transient private Categoria categoria;
-    transient private TipoChiste tipo;
-    transient private final List<Flag> banderas;
+    private Categoria categoria;
+    private TipoChiste tipo;
+    private final List<Flag> banderas;
     @Column(name = "chiste")
     private String chiste;
     @Column(name = "respuesta")
     private String respuesta;
 
-    transient private Lenguaje lenguaje;
+    private Lenguaje lenguaje;
 
     /**
      * Constructor de la clase Chiste.
