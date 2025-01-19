@@ -12,7 +12,8 @@ public interface IChisteDAO {
     Chiste getJoke(String categoria, String[] tipo, String[] banderas);
     Chiste getJoke(String categoria, String[] tipo, String[] banderas, String idioma);
 
+    Chiste getJokeById(int id);
+
 
     void saveJokeAsJson(Chiste chiste, Writer writer);
-
 }

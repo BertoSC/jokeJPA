@@ -35,6 +35,7 @@ public class ChisteDAO implements IChisteDAO {
 
     private static final String BASE_URL = "https://v2.jokeapi.dev/joke/";
     private static final String ENDPOINT = "?format=json";
+    private static final int NO_ID = 0;
 
     private static final String SINGLE = "single";
 
@@ -52,7 +53,7 @@ public class ChisteDAO implements IChisteDAO {
     }
 
 
-    private String getURL(String categoria, String[] tipo, String[] banderas, String idioma) {
+    private String getURL(String categoria, String[] tipo, String[] banderas, String idioma, int id) {
         String url = BASE_URL + categoria + ENDPOINT;
         if (tipo != null && tipo.length > 0) {
             // Concateno los elementos no nulos media stream de un array de String. En el caso de que no haya ninguno, devuelvo un Optional vacío.
@@ -61,7 +62,7 @@ public class ChisteDAO implements IChisteDAO {
                 url += "&type=" + tipos;
             }
         }
-        if (tipo != null & banderas.length > 0) {
+        if (banderas != null && banderas.length > 0) {
             String flags = Arrays.stream(banderas).filter(Objects::nonNull).reduce((s, s2) -> s + "," + s2).orElse(null);
             if(flags!=null && !flags.isEmpty()){
                 url += "&blacklistFlags=" + flags;
@@ -69,6 +70,9 @@ public class ChisteDAO implements IChisteDAO {
         }
         if (idioma != null && !idioma.isEmpty()) {
             url += "&lang=" + idioma;
+        }
+        if (id > 0) {
+            url += "&idRange=" + id;
         }
         System.out.println("url = " + url);
         return url;
@@ -95,23 +99,28 @@ public class ChisteDAO implements IChisteDAO {
 
     @Override
     public String getJokeAsString(String categoria, String[] tipo, String[] banderas) {
-        return getJokeAsString(getURL(categoria, tipo, banderas, null));
+        return getJokeAsString(getURL(categoria, tipo, banderas, null, NO_ID));
     }
 
 
     @Override
     public Chiste getJoke(String categoria, String[] tipo, String[] banderas) {
-        return getJoke(getURL(categoria, tipo, banderas, null));
+        return getJoke(getURL(categoria, tipo, banderas, null, NO_ID));
     }
 
     @Override
     public String getJokeAsString(String categoria, String[] tipo, String[] banderas, String idioma) {
-        return getJokeAsString(getURL(categoria, tipo, banderas, idioma));
+        return getJokeAsString(getURL(categoria, tipo, banderas, idioma, NO_ID));
     }
 
     @Override
     public Chiste getJoke(String categoria, String[] tipo, String[] banderas, String idioma) {
-        return getJoke(getURL(categoria, tipo, banderas, idioma));
+        return getJoke(getURL(categoria, tipo, banderas, idioma, NO_ID));
+    }
+
+    @Override
+    public Chiste getJokeById(int id) {
+        return getJoke(getURL("Any", null, null, null, id));
     }
 
     @Override
@@ -129,9 +138,5 @@ public class ChisteDAO implements IChisteDAO {
     public Chiste getRandomJoke() {
         return getJoke(BASE_URL + "Any");
     }
-
-
-
-
 
 }
